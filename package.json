@@ -1,0 +1,27 @@
+{
+  "name": "tres-en-raya",
+  "version": "0.0.1",
+  "description": "Juego del 3 en raya",
+  "main": "index.html",
+  "dependencies": {
+    "bootstrap": "^3.0.0",
+    "jquery": "^3.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fryntiz/tres-en-raya.git"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "Raúl Caro Pastorino",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/fryntiz/tres-en-raya/issues"
+  },
+  "homepage": "https://github.com/fryntiz/tres-en-raya#readme"
+}
