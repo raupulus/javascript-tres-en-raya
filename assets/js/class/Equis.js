@@ -5,7 +5,7 @@
  **/
 
 class Equis extends BaseFicha {
-    constructor(color) {
+    constructor(color = '#0000FF') {
         super(color);
         this._simbolo = 'X';
     }

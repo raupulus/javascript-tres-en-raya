@@ -5,7 +5,7 @@
 **/
 
 class Circulo extends BaseFicha {
-    constructor(color) {
+    constructor(color = '#FF0000') {
         super(color);
         this._simbolo = 'O';
     }
