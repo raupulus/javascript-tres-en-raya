@@ -10,23 +10,14 @@
 class Tablero {
     constructor(inCasillas = 3, fichaTurno = 'X') {
         this._turno = fichaTurno; // Nombre de la clase que tiene el turno
-        this._numMovimientos = 0;
+        this._numMovimientos = 1;
         this._terminado = false;
 
         // Creo matriz del volumen de [inCasillas][inCasillas]
-        this._casillas = [];
-        for (let x = 0; x < inCasillas; x++) {
-            let c = this._casillas[x] = [];
-            while (c.length < inCasillas) {
-                c.push('');
-            }
-        }
-        /*
         this._casillas = Array(inCasillas).fill('');
         this._casillas.forEach((ele, idx, arr) => {
             arr[idx] = Array(inCasillas).fill('');
         });
-        */
     }
 
     /**
@@ -59,8 +50,14 @@ class Tablero {
      * @private
      */
     _aumentarMovimiento() {
+        var totalCasillas = this._casillas.length * this._casillas.length;
         this._numMovimientos++;
-        return this._numMovimientos > this._casillas;
+
+        if (this._numMovimientos > totalCasillas) {
+            this._terminado = true;
+        }
+
+        return this._terminado;
     }
 
     /**
@@ -75,7 +72,6 @@ class Tablero {
         for (let y in this._casillas) {
             if (this._casillas[0][y] instanceof claseFicha) {
                 coincidencias++;
-                console.log(y);
                 for (let x = 1; x < this._casillas.length; x++) {
                     if (this._casillas[x][y] instanceof claseFicha) {
                         coincidencias++;
@@ -179,11 +175,11 @@ class Tablero {
         if(this._casillas[x][y] instanceof BaseFicha) {
             return false;
         } else if (this._turno === 'X') {
-            this._casillas[x][y] = new Equis('#00009A',
+            this._casillas[x][y] = new Equis('',
                 'assets/images/equis.png'
             );
         } else if (this._turno === 'O') {
-            this._casillas[x][y] = new Circulo('#9A0000',
+            this._casillas[x][y] = new Circulo('',
                 'assets/images/circulo.png'
             );
         }
@@ -218,16 +214,16 @@ class Tablero {
             return ['empate', 'Esto es un claro caso de empate'];
         }
 
+        if (! this._colocarFicha(x, y)) {
+            return ['ficha', 'Ya hay una ficha en esta posición'];
+        }
+
         if(this._comprobarGanador()){
             this._terminado = true;
             return ['ganada', 'Ha ganado el jugador: ' + this._turno,
                 this._turno, //Jugador que ha ganado
                 this._numMovimientos, //Cantidad de movimientos
             ];
-        }
-
-        if (! this._colocarFicha(x, y)) {
-            return ['ficha', 'Ya hay una ficha en esta posición'];
         }
 
         this._cambiarJugador();

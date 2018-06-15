@@ -62,7 +62,6 @@ function clickBox(me) {
         return false;
     } else if (jugada[0] === 'empate') {
         showInfo(jugada[1]);
-        showInfo();
     } else if (jugada[0] === 'ganada') {
         showInfo(jugada[1]);
     }
