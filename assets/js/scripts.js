@@ -7,38 +7,41 @@
 var tablero;
 
 /**
-  * Tirada demostrativa en Diagonal. Comenzando las ficha 'X'
-  */
-function tiradaDemo() {
-    tablero = new Tablero();
-    tablero.nuevaJugada(0,0);  // Jugador X
-    tablero.nuevaJugada(0,1);  // Jugador Y
-    tablero.nuevaJugada(1,1);  // Jugador X
-    tablero.nuevaJugada(0,2);  // Jugador Y
-    tablero.nuevaJugada(2,2);  // Jugador X
-}
-//tiradaDemo();
-
+ * Limpia el juego y lo reinicia dejándolo listo para comenzar de nuevo.
+ */
 function resetGame() {
-    
+    var tabla = document.getElementById('game-table');
+
+    if (document.removeChild(tabla)) {
+        showInfo('Juego Reseteado');
+        createGame();
+    } else {
+        showInfo('Ha ocurrido un error, recarga la página');
+    }
 }
 
-/*
- * Pinta las piezas en el juego.
+/**
+ * Coloca las piezas dentro del tablero de juego.
+ * @param td
+ * @param object
  */
 function placePieces(td, object) {
     td.style.backgroundColor = object.color;
 }
 
+
 function showInfo(info) {
+    var infobox = document.getElementById('game-header');
     // Pintar también en barra superior del juego
     console.log(info);
 }
 
 /**
-  * Comprueba la casilla que se ha pulsado y registra esa pulsación o muestra
-  * error por la barra de información.
-  */
+ * Comprueba la casilla que se ha pulsado y registra esa pulsación o muestra
+ * error por la barra de información.
+ * @param me Referencia al objeto actual, quien activó el evento.
+ * @returns {boolean} Devuelve true si la jugada se ha llevado a cabo correcta.
+ */
 function clickBox(me) {
     var trparent = me.parentNode;
     var td = me;
@@ -65,17 +68,27 @@ function clickBox(me) {
     return true;
 }
 
+/**
+ * Añade eventos al juego para interactuar en él.
+ */
 function addEvents() {
     var td = Array.from(document.getElementsByClassName('game-table-td'));
     td.forEach((ele, idx) => {
         ele.addEventListener('click', function() {
             clickBox(this);
         });
-    })
+    });
+
+    document.getElementById('btn-restart').addEventListener('click', resetGame);
 }
 
-function createGame(size) {
-    tablero = new Tablero(size, 'X');
+/**
+ * Crea el juego inicial instanciando el tablero y generando la tabla sobre la
+ * que pintar el juego.
+ * @param size
+ */
+function createGame(size, jugador1) {
+    tablero = new Tablero(size, jugador1);
     var tabla = crearNodoId('table', 'game-table');
     var tr = crearNodo('tr', 'game-table-tr');
     var td = crearNodo('td', 'game-table-td');
@@ -99,9 +112,7 @@ function createGame(size) {
 /**
  * Inicializa el juego.
  */
-function init() {
-    createGame(3);
+function gameInit(size = 3, jugador1 = 'X') {
+    createGame(size);
     addEvents();
 }
-
-init();

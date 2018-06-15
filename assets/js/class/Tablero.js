@@ -95,7 +95,7 @@ class Tablero {
         var coincidencias = 0;
 
         for (let x in this._casillas) {
-            if (this._casillas[0][x] instanceof claseFicha) {
+            if (this._casillas[x][0] instanceof claseFicha) {
                 coincidencias++;
                 for (let y = 1; y < this._casillas.length; y++) {
                     if (this._casillas[x][y] instanceof claseFicha) {
@@ -213,11 +213,13 @@ class Tablero {
 
         if(this._comprobarGanador()){
             this._terminado = true;
-            return ['ganada', 'Ha ganado el jugador: ' + this._turno];
+            return ['ganada', 'Ha ganado el jugador: ' + this._turno,
+                this._turno, //Jugador que ha ganado
+                this._numMovimientos, //Cantidad de movimientos
+            ];
         }
 
         this._cambiarJugador();
-
         return true;
     }
 }
