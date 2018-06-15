@@ -121,11 +121,7 @@ class Tablero {
         var v = this._comprobarVertical(claseFicha);
         var d = this._comprobarDiagonal(claseFicha);
 
-        if (false === h === v === d) {
-            return false;
-        }
-
-        return true;
+        return h === v === d;
     }
 
     _colocarFicha(x, y) {
