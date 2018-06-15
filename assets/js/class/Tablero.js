@@ -14,13 +14,10 @@ class Tablero {
         this._terminado = false;
 
         // Creo matriz del volumen de [inCasillas][inCasillas]
-        this._casillas = [];
-        for (let x = 0; x < inCasillas; x++) {
-            let c = this._casillas[x] = [];
-            while (c.length < inCasillas) {
-                c.push('');
-            }
-        }
+        this._casillas = Array(inCasillas).fill([]);
+        this._casillas.forEach((ele, idx, arr) => {
+            arr[idx] = Array(inCasillas).fill('');
+        });
     }
 
     /**

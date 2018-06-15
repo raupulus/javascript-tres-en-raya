@@ -9,21 +9,24 @@ var tablero;
 /**
  * Limpia el juego y lo reinicia dejándolo listo para comenzar de nuevo.
  */
-function resetGame() {
+function resetGame(size) {
+    size = isNaN(size) ? 0 : size;
     var tabla = document.getElementById('game-table');
+    var tablaParent = document.getElementById('game-display');
 
-    if (document.removeChild(tabla)) {
+    try {
+        tablaParent.removeChild(tabla);
+        gameInit(size);
         showInfo('Juego Reseteado');
-        createGame();
-    } else {
+    } catch(e) {
         showInfo('Ha ocurrido un error, recarga la página');
     }
 }
 
 /**
  * Coloca las piezas dentro del tablero de juego.
- * @param td
- * @param object
+ * @param td Nodo que representa donde colocar la pieza actual.
+ * @param object Objeto en la posición actual referenciado a la ficha.
  */
 function placePieces(td, object) {
     td.style.backgroundColor = object.color;
@@ -32,7 +35,7 @@ function placePieces(td, object) {
 
 function showInfo(info) {
     var infobox = document.getElementById('game-header');
-    // Pintar también en barra superior del juego
+    infobox.textContent = info;
     console.log(info);
 }
 
@@ -68,6 +71,12 @@ function clickBox(me) {
     return true;
 }
 
+function changeSize() {
+    var size = Number(prompt('Introduce la cantidad de cuadros'));
+    resetGame(size);
+    showInfo('Modificando tamaño a ' + size + 'x' + size + ' cuadros');
+}
+
 /**
  * Añade eventos al juego para interactuar en él.
  */
@@ -80,6 +89,7 @@ function addEvents() {
     });
 
     document.getElementById('btn-restart').addEventListener('click', resetGame);
+    document.getElementById('btn-rayas').addEventListener('click', changeSize);
 }
 
 /**
@@ -113,6 +123,10 @@ function createGame(size, jugador1) {
  * Inicializa el juego.
  */
 function gameInit(size = 3, jugador1 = 'X') {
-    createGame(size);
+    if (size < 3) {
+        createGame(3);
+    } else {
+        createGame(size);
+    }
     addEvents();
 }
