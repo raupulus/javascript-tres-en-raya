@@ -23,19 +23,56 @@ function resetGame() {
     
 }
 
-function showInfo() {
+/*
+ * Pinta las piezas en el juego.
+ */
+function placePieces() {
 
 }
 
+function showInfo() {
+    console.log();
+}
+
+/**
+  * Comprueba la casilla que se ha pulsado y registra esa pulsación o muestra
+  * error por la barra de información.
+  */
+function clickBox(id) {
+    alert(id);
+    // Error:
+    // showInfo('Ya existe ficha aquí')
+}
+
 function addEvents() {
+
 
 }
 
 function createGame(size) {
     tablero = new Tablero(size, 'X');
+    var tabla = crearNodoId('table', 'game-table');
+    var tr = crearNodo('tr', 'game-table-tr');
+    var td = crearNodo('td', 'game-table-td');
+
+    for (let x = 1; x <= size; x++) {
+        tr.appendChild(td.cloneNode(true));
+    }
+
+    // Mediante un array de filas, itero mientras añado a la tabla
+    Array(size).fill(tr).forEach(ele => {
+        tabla.appendChild(ele.cloneNode(true));
+    });
+
+    document.getElementById('game-display').appendChild(tabla);
 }
 
+/**
+ * Inicializa el juego.
+ */
 function init() {
     createGame(3);
     addEvents();
 }
+
+init();

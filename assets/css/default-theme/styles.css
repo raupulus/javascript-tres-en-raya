@@ -5,3 +5,28 @@
  * @license https://www.gnu.org/licenses/gpl-3.0-standalone.html
  */
 
+#box-game {
+    width: 100%;
+    background-color: grey;
+}
+
+#game-display {
+    width: 100%;
+    background-color: darkgrey;
+}
+
+#game-display #game-table {
+    margin: auto;
+    background-color: yellow;
+}
+
+#game-display #game-table .game-table-td {
+    width: 80px;
+    height: 80px;
+    border: 2px groove #000000;
+}
+
+#game-buttons {
+    margin: auto;
+    text-align: center;
+}

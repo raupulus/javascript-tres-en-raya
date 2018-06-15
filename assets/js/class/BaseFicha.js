@@ -4,8 +4,6 @@
  * @license https://wwww.gnu.org/licenses/gpl.txt
 **/
 
-// class {}
-
 class BaseFicha {
     constructor(inColor) {
         this._color = inColor;
