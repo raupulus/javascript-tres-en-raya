@@ -30,6 +30,7 @@ function resetGame(size) {
  */
 function placePieces(td, object) {
     td.style.backgroundColor = object.color;
+    td.style.backgroundImage = `url(${object.imagen})`;
 }
 
 

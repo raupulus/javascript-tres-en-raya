@@ -4,13 +4,11 @@
  * @license https://wwww.gnu.org/licenses/gpl.txt
  **/
 
+/**
+ * Clase para representar un tipo de ficha, hereda de BaseFicha().
+ */
 class Equis extends BaseFicha {
-    constructor(color = '#0000FF') {
-        super(color);
-        this._simbolo = 'X';
-    }
-
-    get simbolo() {
-        return this._simbolo;
+    constructor(color = '#0000FF', inImagen = '') {
+        super(color, 'O', inImagen);
     }
 }
