@@ -30,3 +30,10 @@
     margin: auto;
     text-align: center;
 }
+
+#game-header {
+    width: 100%;
+    background-color: darkblue;
+    color: white;
+    text-align: center;
+}
