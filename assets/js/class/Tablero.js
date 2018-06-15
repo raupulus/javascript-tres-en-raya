@@ -8,6 +8,7 @@ class Tablero {
     constructor(inCasillas = 3, fichaTurno = 'X') {
         this._turno = fichaTurno; // Nombre de la clase que tiene el turno
         this._numMovimientos = 0;
+        this._terminado = false;
 
         // Creo matriz del volumen de [inCasillas][inCasillas]
         this._casillas = [];
@@ -49,11 +50,11 @@ class Tablero {
     _comprobarHorizontal(claseFicha) {
         var coincidencias = 0;
 
-        for (let x in this._casillas) {
-            if (this._casillas[x][0] instanceof claseFicha) {
+        for (let y in this._casillas) {
+            if (this._casillas[0][y] instanceof claseFicha) {
                 coincidencias++;
-                for (let j = 1; j < this._casillas.length; j++) {
-                    if (this._casillas[x][j] instanceof claseFicha) {
+                for (let x = 1; x < this._casillas.length; x++) {
+                    if (this._casillas[x][y] instanceof claseFicha) {
                         coincidencias++;
                     }
                 }
@@ -74,10 +75,11 @@ class Tablero {
         for (let x in this._casillas) {
             if (this._casillas[0][x] instanceof claseFicha) {
                 coincidencias++;
-                for (let j = 1; j < this._casillas.length; j++) {
-                    if (this._casillas[j][x] instanceof claseFicha) {
+                for (let y = 1; y < this._casillas.length; y++) {
+                    if (this._casillas[x][y] instanceof claseFicha) {
                         coincidencias++;
                     }
+                    console.log(x+':'+y);
                 }
 
                 if (coincidencias === this._casillas.length) {
@@ -125,7 +127,7 @@ class Tablero {
     }
 
     _colocarFicha(x, y) {
-        if(! this._casillas[x][y] === ''){
+        if(this._casillas[x][y] instanceof BaseFicha){
             return false;
         } else if (this._turno === 'X') {
             this._casillas[x][y] = new Equis();
@@ -144,24 +146,35 @@ class Tablero {
     }
 
     /**
+     * Comrpueba si está ocupada la posición del tablero por alguna ficha.
+     * @private
+     */
+    _ocupada() {
+
+    }
+
+    /**
       * Inicia la jugada moviendo ficha al lugar indicado.
       * Devuelve booleano que será false si ha terminado y true si continua la
       * partida por no haber aún ganador.
       */
     nuevaJugada(x, y) {
+        if (this._terminado) {
+            return ['terminado', 'La partida ha finalizado, comienza otra'];
+        }
+
         if (this._aumentarMovimiento()) {
-            console.log('¡Todas las casillas están ocupadas!');
-            return false;
+            this._terminado = true;
+            return ['empate', 'Esto es un claro caso de empate'];
         }
 
         if (! this._colocarFicha(x, y)) {
-            console.log('La posición ya está ocupada por otra ficha');
-            return false;
+            return ['ficha', 'Ya hay una ficha en esta posición'];
         }
 
         if(this._comprobarGanador()){
-            console.log('Han ganado las ' + this._turno);
-            return false;
+            this._terminado = true;
+            return ['ganada', 'Ha ganado el jugador: ' + this._turno];
         }
 
         this._cambiarJugador();
