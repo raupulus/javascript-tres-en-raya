@@ -4,6 +4,9 @@
  * @license https://www.gnu.org/licenses/gpl-3.0-standalone.html
  */
 
+/**
+ * Clase principal para el juego del tres en raya pero dinámico.
+ */
 class Tablero {
     constructor(inCasillas = 3, fichaTurno = 'X') {
         this._turno = fichaTurno; // Nombre de la clase que tiene el turno
@@ -20,33 +23,46 @@ class Tablero {
         }
     }
 
+    /**
+     * Getter para el turno actual
+     * @returns {*} devolverá un objeto que hereda de BaseFicha.
+     */
     get turno() {
         return this._turno;
     }
 
+    /**
+     * Getter para el número de movimientos dados en la partida.
+     * @returns {number} Devuelve un valor Integer.
+     */
     get numMovimientos() {
         return this._numMovimientos;
     }
 
-    /*
+    /**
      * Devuelve una matriz con los objetos de tipo Equis() y Circulo().
+     * @returns {Array} Array con todos los objetos.
      */
     get casillas() {
         return this._casillas;
     }
 
     /**
-      * Aumenta los movimientos actuales y devuelve si aún quedan huecos libres.
-      */
+     * Aumenta los movimientos actuales y devuelve si aún quedan huecos libres.
+     * @returns {boolean}
+     * @private
+     */
     _aumentarMovimiento() {
         this._numMovimientos++;
         return this._numMovimientos > this._casillas;
     }
 
     /**
-      * Si encuentra una coincidencia de la primera columna comprueba la fila
-      * para devolver un booleano indicando si está completa.
-      */
+     * Comprueba la jugada en el eje horizontal
+     * @param claseFicha Recibe la clase con la que se instanciaron las fichas.
+     * @returns {boolean} Devuelve booleano indicando si hay línea ganadora.
+     * @private
+     */
     _comprobarHorizontal(claseFicha) {
         var coincidencias = 0;
 
@@ -69,6 +85,12 @@ class Tablero {
         return false;
     }
 
+    /**
+     * Comprueba la jugada en el eje vertical.
+     * @param claseFicha Recibe la clase con la que se instanciaron las fichas.
+     * @returns {boolean} Devuelve booleano indicando si hay línea ganadora.
+     * @private
+     */
     _comprobarVertical(claseFicha) {
         var coincidencias = 0;
 
@@ -79,7 +101,6 @@ class Tablero {
                     if (this._casillas[x][y] instanceof claseFicha) {
                         coincidencias++;
                     }
-                    console.log(x+':'+y);
                 }
 
                 if (coincidencias === this._casillas.length) {
@@ -92,6 +113,13 @@ class Tablero {
         return false;
     }
 
+    /**
+     * Compruebo las dos diagonales (X) del tablero solo si en alguna de las
+     * dos puntas existe ficha colocada.
+     * @param claseFicha Recibe la clase con la que se instanciaron las fichas.
+     * @returns {boolean} Devuelve booleano indicando si hay línea ganadora.
+     * @private
+     */
     _comprobarDiagonal(claseFicha) {
         var coincidencias1 = 0;
         var coincidencias2 = 0;
@@ -105,7 +133,7 @@ class Tablero {
                     coincidencias1++;
                 }
 
-                if (this._casillas[this._casillas.length - 1][x]
+                if (this._casillas[(this._casillas.length - 1) - x][x]
                     instanceof claseFicha) {
                     coincidencias2++;
                 }
@@ -116,6 +144,12 @@ class Tablero {
                (coincidencias2 === this._casillas.length);
     }
 
+    /**
+     * Comprueba si hay alguna línea en el tablero para declarar ganador.
+     * @returns {boolean} Devuelve booleano donde true significa que se ha
+     *                    comprobado y no hay ganador.
+     * @private
+     */
     _comprobarGanador() {
         var claseFicha = this._turno === 'X' ? Equis : Circulo;
 
@@ -126,6 +160,14 @@ class Tablero {
         return h === v === d;
     }
 
+    /**
+     * Situal una ficha del jugador actual en la posición pasada como parámetro.
+     * en caso de no poder hacerlo se entiende que ya hay una ficha en su lugar.
+     * @param x Posición X en la matríz
+     * @param y Posición Y en la matriz
+     * @returns {boolean} Devuelve booleano si ha sido posible colocar ficha.
+     * @private
+     */
     _colocarFicha(x, y) {
         if(this._casillas[x][y] instanceof BaseFicha){
             return false;
@@ -139,25 +181,22 @@ class Tablero {
     }
 
     /**
-      * Asigno el jugador con el turno correspondiente a jugar.
-      */
+     * Asigno el jugador con el turno correspondiente a jugar.
+     * @private
+     */
     _cambiarJugador() {
         this._turno = this._turno ==='X' ? 'O' : 'X';
     }
 
     /**
-     * Comrpueba si está ocupada la posición del tablero por alguna ficha.
-     * @private
+     * Inicia la jugada moviendo ficha al lugar indicado.
+     * Devuelve booleano que será false si ha terminado y true si continua la
+     * partida por no haber aún ganador.
+     * @param x Posición X en la matríz
+     * @param y Posición Y en la matriz
+     * @returns {*} Devuelve un Array donde la primera posición es el código de
+     *              resultado, la segunda posición es el mensaje de información.
      */
-    _ocupada() {
-
-    }
-
-    /**
-      * Inicia la jugada moviendo ficha al lugar indicado.
-      * Devuelve booleano que será false si ha terminado y true si continua la
-      * partida por no haber aún ganador.
-      */
     nuevaJugada(x, y) {
         if (this._terminado) {
             return ['terminado', 'La partida ha finalizado, comienza otra'];
